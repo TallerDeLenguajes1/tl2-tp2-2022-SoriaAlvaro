@@ -22,7 +22,7 @@ namespace MetodosAdicionales
         private static Alumno CargarAlumno(int id, string curso)
         {
             var alum = new Alumno();
-            alum.Id = id;
+            alum.Id = id + 1;
             System.Console.WriteLine("Nombre");
             alum.Nombre = SetString();
             System.Console.WriteLine("Apellido");
