@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClaseAlumnos;
 using MetodosAdicionales;
+using Exceptions;
 namespace Helper
 {
     public class HelperDeArchivos
@@ -61,11 +62,19 @@ namespace Helper
         {
             System.Console.WriteLine("1)Agregar\n2)Borrar Lista");
             int option = Convert.ToInt32(Console.ReadLine());
+            if(option < 1 || option > 2)
+            {
+                throw new ExceptionClass("Se ingresó un numero incorrecto");
+            }
             if(option == 1)
             {
                 CrearCarpeta();
                 System.Console.WriteLine("Ingrese la cantidad de Alumnos para este curso:");
                 int cantAlum = Convert.ToInt32(Console.ReadLine());
+                if(cantAlum <= 0)
+                {
+                    throw new ExceptionClass("Se ingresó un numero menor o igual que 0");
+                }
                 lista = Medotos.SetList(cantAlum,curso);
                 EscrivirArchivo(lista,curso);
             }

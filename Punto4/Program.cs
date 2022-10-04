@@ -3,31 +3,37 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using NLog;
 using ClaseAlumnos;
 using MetodosAdicionales;
 using Helper;
-
+using Exceptions;
 string[] cursos = {"Atletimo","Voley","Futbol"};
-List<Alumno> L_Atletismo =new List<Alumno>(),
-    L_Voley =new List<Alumno>(),
-    L_Futbol =new List<Alumno>();
+List<Alumno>[] L_Cursos = new List<Alumno>[3];
+
+//NLog
+var logger = LogManager.GetCurrentClassLogger();
 
 try
 {
     
+    logger.Info("Escogiendo Categorias");
     System.Console.WriteLine("1)Atletimo\n2)Voley\n3)Futbol");
     int option = Convert.ToInt32(Console.ReadLine());
-
-    if(option == 1){
-        HelperDeArchivos.DeleteOrAdd(L_Atletismo, cursos[0]);
+    logger.Info("Entrando a las opciones de borrado o carga de datos");
+    if(!(option > 0 && option <4))
+    {
+        throw new ExceptionClass("Se ingresó un numero incorrecto");
     }
-    if(option == 2){
-        HelperDeArchivos.DeleteOrAdd(L_Voley, cursos[1]);
-    }
-    if(option == 3){
-        HelperDeArchivos.DeleteOrAdd(L_Futbol, cursos[2]);
-    }
-}catch(Exception ex)
+        HelperDeArchivos.DeleteOrAdd(L_Cursos[option-1], cursos[option-1]);
+}catch(FormatException ex)
 {
-    System.Console.WriteLine(ex.Message);
+    logger.Error("(Se ingresó una letra)" + ex.Message);
+}catch(ExceptionClass ex)
+{
+    logger.Error(ex.Message);
+}
+catch(Exception ex)
+{
+    logger.Error(ex.Message);
 }
